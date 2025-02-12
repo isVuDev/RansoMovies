@@ -7,7 +7,6 @@ import ShoppingPhonePage from "../pages/HomeTemplate/ShoppingPhonePage";
 import HooksPage from "./../pages/HomeTemplate/HooksPage";
 import DetailMoviePage from "./../pages/HomeTemplate/DetailMoviePage";
 import PageNotFound from "./../pages/PageNotFound";
-
 import AdminTemplate from "../pages/AdminTemplate";
 import DashboardPage from "../pages/AdminTemplate/DashboardPage";
 import AddUserPage from "../pages/AdminTemplate/AddUserPage";
