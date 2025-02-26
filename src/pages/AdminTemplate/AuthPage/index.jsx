@@ -46,7 +46,7 @@ export default function AuthPage() {
 
   return (
     <div>
-      <h1>AuthPage</h1>
+      <h1 className="text-center text-3xl font-bold mt-4">ĐĂNG NHẬP</h1>
 
       <form onSubmit={handleLogin} className="max-w-sm mx-auto">
         {handleErrorMessage()}
