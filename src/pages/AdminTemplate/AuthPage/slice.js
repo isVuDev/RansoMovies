@@ -35,6 +35,12 @@ export const actLogin = createAsyncThunk(
   }
 );
 
+// Action logout để xóa user khỏi Redux state và localStorage
+export const actLogout = createAsyncThunk("auth/actLogout", async () => {
+  localStorage.removeItem("userInfo"); // Xóa thông tin đăng nhập khỏi localStorage
+  return null; // Trả về null để cập nhật state
+});
+
 const userInfo = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
@@ -60,6 +66,10 @@ const authSlice = createSlice({
     builder.addCase(actLogin.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    });
+    // Xử lý logout
+    builder.addCase(actLogout.fulfilled, (state) => {
+      state.data = null; // Xóa dữ liệu user khỏi Redux store
     });
   },
 });

@@ -5,7 +5,7 @@ export const fetchListMovie = createAsyncThunk(
   "listMoviePage/fetchListMovie",
   async (__dirname, { rejectWithValue }) => {
     try {
-      const result = await api.get("/QuanLyPhim/LayDanhSachPhim?maNhom=GP01");
+      const result = await api.get("/QuanLyPhim/LayDanhSachPhim?maNhom=GP07");
 
       return result.data.content;
     } catch (error) {
