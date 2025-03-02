@@ -16,6 +16,8 @@ import { Route } from "react-router-dom";
 import UsersPage from "../pages/AdminTemplate/UsersPage";
 import AddMoviePage from "../pages/AdminTemplate/AddMoviePage";
 import FilmsPage from "../pages/AdminTemplate/Films";
+import EditMoviePage from "../pages/AdminTemplate/Films/EditMovie";
+import CreateShowtimePage from "../pages/AdminTemplate/Showtime";
 
 const routes = [
   {
@@ -75,6 +77,14 @@ const routes = [
       {
         path: "films",
         element: FilmsPage,
+      },
+      {
+        path: "edit/:id",
+        element: EditMoviePage,
+      },
+      {
+        path: "showtime/:id",
+        element: CreateShowtimePage,
       },
     ],
   },

@@ -1,13 +1,21 @@
-import { Outlet, NavLink, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { Outlet, NavLink, Navigate, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { actLogout } from "../AdminTemplate/AuthPage/slice";
 export default function AdminTemplate() {
   const { data } = useSelector((state) => state.authReducer);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Nếu chưa login => redirect về trang /dangnhap
   if (!data) {
     return <Navigate to="/dangnhap" />;
   }
+
+  const handleLogout = () => {
+    dispatch(actLogout()).then(() => {
+      navigate("/dangnhap");
+    });
+  };
 
   return (
     <div className="flex h-screen">
@@ -55,7 +63,10 @@ export default function AdminTemplate() {
         {/* Navbar */}
         <header className="bg-white shadow p-4 flex justify-between items-center">
           <h1 className="text-xl font-bold">Admin Dashboard</h1>
-          <button className="bg-red-500 text-white px-3 py-1 rounded">
+          <button
+            className="bg-red-500 text-white px-3 py-1 rounded cursor-pointer"
+            onClick={handleLogout}
+          >
             Logout
           </button>
         </header>
