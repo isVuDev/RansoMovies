@@ -46,45 +46,41 @@ export default function AuthPage() {
 
   return (
     <div>
-      <h1 className="text-center text-3xl font-bold mt-4">ĐĂNG NHẬP</h1>
+      <h1 className="text-center text-4xl mt-10 text-red-600 mb-10">
+        ĐĂNG NHẬP
+      </h1>
 
       <form onSubmit={handleLogin} className="max-w-sm mx-auto">
         {handleErrorMessage()}
         <div className="mb-5">
-          <label
-            htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="email" className="block font-medium">
             Username
           </label>
           <input
             onChange={handleOnChange}
             name="taiKhoan"
             type="text"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="w-full p-2 border rounded"
             required
           />
         </div>
         <div className="mb-5">
-          <label
-            htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="password" className="block font-medium">
             Your password
           </label>
           <input
             onChange={handleOnChange}
             name="matKhau"
             type="password"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="w-full p-2 border rounded"
             required
           />
         </div>
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer"
         >
-          Submit
+          ĐĂNG NHẬP
         </button>
       </form>
     </div>
