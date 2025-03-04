@@ -102,6 +102,7 @@ export default function CreateShowtimePage() {
               value={selectedHeThong}
               onChange={(e) => setSelectedHeThong(e.target.value)}
               required
+              className="border border-gray-300 rounded-md p-2 cursor-pointer ml-2"
             >
               <option value="">Chọn hệ thống rạp</option>
               {heThongRap.map((rap) => (
@@ -118,6 +119,7 @@ export default function CreateShowtimePage() {
               value={selectedCumRap}
               onChange={(e) => setSelectedCumRap(e.target.value)}
               required
+              className="border border-gray-300 rounded-md p-2 cursor-pointer ml-2"
             >
               <option value="">Chọn cụm rạp</option>
               {cumRap.map((rap) => (
@@ -134,7 +136,7 @@ export default function CreateShowtimePage() {
               type="datetime-local"
               value={ngayChieuGioChieu}
               onChange={(e) => setNgayChieuGioChieu(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 ml-2"
+              className="border border-gray-300 rounded-md px-2 py-1 ml-2 cursor-pointer"
               required
             />
           </div>

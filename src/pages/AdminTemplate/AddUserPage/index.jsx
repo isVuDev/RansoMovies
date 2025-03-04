@@ -1,163 +1,147 @@
 import { useState } from "react";
 import api from "../../../services/api";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function AddUserPage() {
-    const [user, setUser] = useState({
-        taiKhoan: "",
-        matKhau: "",
-        email: "",
-        soDt: "",
-        maNhom: "GP01",
-        maLoaiNguoiDung: "KhachHang",
-        hoTen: "",
+  const [user, setUser] = useState({
+    taiKhoan: "",
+    matKhau: "",
+    email: "",
+    soDt: "",
+    maNhom: "GP07",
+    maLoaiNguoiDung: "KhachHang",
+    hoTen: "",
+  });
+
+  const navigate = useNavigate();
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+
+    setUser({
+      ...user,
+      [name]: value,
     });
+  };
 
-    const handleOnChange = (e) => {
-        const { name, value } = e.target;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        setUser({
-            ...user,
-            [name]: value,
-        });
-    };
+    try {
+      const result = await api.post("/QuanLyNguoiDung/ThemNguoiDung", user);
+      setTimeout(() => {
+        navigate("/admin/users");
+      }, 1500);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log("user submit", user);
+      // hiển thị noti
+      toast.success(result.data.message, {
+        position: "bottom-right",
+      });
+    } catch (error) {
+      console.log("error: ", error);
 
-        try {
-            const result = await api.post(
-                "/QuanLyNguoiDung/ThemNguoiDung",
-                user
-            );
+      const messageError = error.response.data.content;
+      console.log("messageError: ", messageError);
 
-            console.log("result: ", result);
+      // hiển thị noti
+      toast.error(messageError, {
+        position: "bottom-right",
+      });
+    }
+  };
 
-            // hiển thị noti
-            toast.success(result.data.message, {
-                position: "bottom-right",
-            });
-        } catch (error) {
-            console.log("error: ", error);
+  return (
+    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+      <h1 className="text-center text-red-500 text-4xl mb-10">
+        Thêm người dùng
+      </h1>
 
-            const messageError = error.response.data.content;
-            console.log("messageError: ", messageError);
-
-            // hiển thị noti
-            toast.error(messageError, {
-                position: "bottom-right",
-            });
-        }
-    };
-
-    return (
-        <div className="container mx-auto">
-            <h1 className="text-center text-red-500 text-4xl">Add User Page</h1>
-
-            <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
-                <div className="mb-5">
-                    <label
-                        htmlFor="email"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                        Tài khoản
-                    </label>
-                    <input
-                        onChange={handleOnChange}
-                        name="taiKhoan"
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required
-                    />
-                </div>
-                <div className="mb-5">
-                    <label
-                        htmlFor="password"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                        Mật khẩu
-                    </label>
-                    <input
-                        onChange={handleOnChange}
-                        name="matKhau"
-                        type="password"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required
-                    />
-                </div>
-                <div className="mb-5">
-                    <label
-                        htmlFor="password"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                        Email
-                    </label>
-                    <input
-                        onChange={handleOnChange}
-                        name="email"
-                        type="email"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required
-                    />
-                </div>
-                <div className="mb-5">
-                    <label
-                        htmlFor="password"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                        Số Điện Thoại
-                    </label>
-                    <input
-                        onChange={handleOnChange}
-                        name="soDt"
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required
-                    />
-                </div>
-                <div className="mb-5">
-                    <label
-                        htmlFor="password"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                        Họ tên
-                    </label>
-                    <input
-                        onChange={handleOnChange}
-                        name="hoTen"
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required
-                    />
-                </div>
-                <div className="mb-5">
-                    <label
-                        htmlFor="maLoaiNguoiDung"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                        Loại người dùng
-                    </label>
-                    <select
-                        onChange={handleOnChange}
-                        id="maLoaiNguoiDung"
-                        name="maLoaiNguoiDung"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                        <option value={"KhachHang"}>KhachHang</option>
-                        <option value={"QuanTri"}>QuanTri</option>
-                    </select>
-                </div>
-                <button
-                    type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                    Submit
-                </button>
-            </form>
-
-            {/* toast noti */}
-            <ToastContainer />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="mb-5">
+          <label htmlFor="email" className="block font-medium">
+            Tài khoản
+          </label>
+          <input
+            onChange={handleOnChange}
+            name="taiKhoan"
+            type="text"
+            className="w-full p-2 border rounded"
+            required
+          />
         </div>
-    );
+        <div className="mb-5">
+          <label htmlFor="password" className="block font-medium">
+            Mật khẩu
+          </label>
+          <input
+            onChange={handleOnChange}
+            name="matKhau"
+            type="password"
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+        <div className="mb-5">
+          <label htmlFor="password" className="block font-medium">
+            Email
+          </label>
+          <input
+            onChange={handleOnChange}
+            name="email"
+            type="email"
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+        <div className="mb-5">
+          <label htmlFor="password" className="block font-medium">
+            Số Điện Thoại
+          </label>
+          <input
+            onChange={handleOnChange}
+            name="soDt"
+            type="text"
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+        <div className="mb-5">
+          <label htmlFor="password" className="block font-medium">
+            Họ tên
+          </label>
+          <input
+            onChange={handleOnChange}
+            name="hoTen"
+            type="text"
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+        <div className="mb-5">
+          <label htmlFor="maLoaiNguoiDung" className="block font-medium">
+            Loại người dùng
+          </label>
+          <select
+            onChange={handleOnChange}
+            id="maLoaiNguoiDung"
+            name="maLoaiNguoiDung"
+            className="w-full p-2 border rounded"
+          >
+            <option value={"KhachHang"}>KhachHang</option>
+            <option value={"QuanTri"}>QuanTri</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 cursor-pointer"
+        >
+          Thêm người dùng
+        </button>
+      </form>
+
+      {/* toast noti */}
+      <ToastContainer />
+    </div>
+  );
 }

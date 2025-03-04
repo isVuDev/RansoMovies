@@ -1,96 +1,145 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchListUsers } from "./slice";
-
-// call api layDanhSachNguoiDung để hiển thị toàn bộ thông tin của tất cả user lên giao diện (dùng redux)
-
-// B1: tạo slice của redux
-// B2: add reducer vào store
-// B3: ...
-// B4: ...
+import { deleteUser } from "./deleteSlice";
+import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function UsersPage() {
-    const state = useSelector((state) => state.listUsersReducer);
+  const state = useSelector((state) => state.listUsersReducer);
+  const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchListUsers());
+  }, []);
 
-    useEffect(() => {
-        dispatch(fetchListUsers());
-    }, []);
+  const handleDeleteUser = (taiKhoan) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa người dùng này không?")) {
+      dispatch(deleteUser(taiKhoan))
+        .unwrap()
+        .then(() => toast.success("Xóa người dùng thành công!"))
+        .catch(() => toast.error("Xóa người dùng thất bại!"));
+      dispatch(fetchListUsers());
+    }
+  };
 
-    const renderListUsers = () => {
-        console.log("state listUser", state);
-        const { data } = state;
+  const filteredUsers = state?.data?.filter(
+    (user) =>
+      user.taiKhoan.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.hoTen.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-        return data?.map((user) => {
-            return (
-                <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                    <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                        {user.taiKhoan}
-                    </th>
-                    <td className="px-6 py-4">{user.hoTen}</td>
-                    <td className="px-6 py-4">{user.email}</td>
-                    <td className="px-6 py-4">{user.soDT}</td>
-                    <td className="px-6 py-4">
-                        <span
-                            className={
-                                user.maLoaiNguoiDung === "KhachHang"
-                                    ? "text-green-500"
-                                    : "text-red-500"
-                            }
-                        >
-                            {user.maLoaiNguoiDung}
-                        </span>
-                    </td>
-                    <td className="px-6 py-4">
-                        <a
-                            href="#"
-                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                        >
-                            Edit
-                        </a>
-                    </td>
-                </tr>
-            );
-        });
-    };
+  const renderListUsers = () => {
+    if (state.loading) {
+      return (
+        <tr>
+          <td colSpan="6" className="text-center p-4 text-gray-500">
+            Loading...
+          </td>
+        </tr>
+      );
+    }
 
-    return (
-        <div className="container mx-auto">
-            <h1 className="text-center text-red-500 text-4xl mb-10">
-                Users Page
-            </h1>
+    if (!filteredUsers || filteredUsers.length === 0) {
+      return (
+        <tr>
+          <td colSpan="6" className="text-center p-4 text-gray-500">
+            Không tìm thấy người dùng nào.
+          </td>
+        </tr>
+      );
+    }
 
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">
-                                Tài khoản
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Họ tên
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Email
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                SĐT
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Loại người dùng
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>{renderListUsers()}</tbody>
-                </table>
-            </div>
-        </div>
-    );
+    return filteredUsers?.map((user) => {
+      return (
+        <tr key={user.taiKhoan}>
+          <th scope="row" className="p-3 border">
+            {user.taiKhoan}
+          </th>
+          <td className="p-3 border">{user.hoTen}</td>
+          <td className="p-3 border">{user.email}</td>
+          <td className="p-3 border">{user.soDT}</td>
+          <td className="p-3 border">
+            <span
+              className={
+                user.maLoaiNguoiDung === "KhachHang"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }
+            >
+              {user.maLoaiNguoiDung}
+            </span>
+          </td>
+          <td className="p-3 border">
+            <Link
+              to={`/admin/edit-user/${user.taiKhoan}`}
+              className="bg-green-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+            >
+              Edit
+            </Link>
+            <button
+              onClick={() => handleDeleteUser(user.taiKhoan)}
+              className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 mt-2 cursor-pointer"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      );
+    });
+  };
+
+  return (
+    <div className="bg-white p-6 rounded-lg shadow">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-center text-red-500 text-4xl mb-10">
+          Danh sách người dùng
+        </h1>
+        <Link
+          to="/admin/add-user"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          + Add User
+        </Link>
+      </div>
+
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border border-gray-300 rounded-lg px-4 py-2 w-full mb-4"
+        />
+
+        <table className="w-full text-left border border-gray-300">
+          <thead className="bg-gray-200">
+            <tr>
+              <th scope="col" className="p-3 border">
+                Tài khoản
+              </th>
+              <th scope="col" className="p-3 border">
+                Họ tên
+              </th>
+              <th scope="col" className="p-3 border">
+                Email
+              </th>
+              <th scope="col" className="p-3 border">
+                SĐT
+              </th>
+              <th scope="col" className="p-3 border">
+                Loại người dùng
+              </th>
+              <th scope="col" className="p-3 border">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>{renderListUsers()}</tbody>
+        </table>
+      </div>
+      <ToastContainer />
+    </div>
+  );
 }

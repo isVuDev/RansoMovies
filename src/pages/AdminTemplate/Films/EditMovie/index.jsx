@@ -109,7 +109,9 @@ export default function EditMoviePage() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Chỉnh sửa phim</h2>
+      <h2 className="text-center text-red-500 text-4xl mb-10">
+        Chỉnh sửa phim
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block font-medium">Tên phim:</label>

@@ -77,7 +77,7 @@ export default function AddMoviePage() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Thêm mới phim</h2>
+      <h2 className="text-center text-red-500 text-4xl mb-10">Thêm phim mới</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -164,7 +164,7 @@ export default function AddMoviePage() {
           <input
             type="file"
             accept="image/*"
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded cursor-pointer"
             onChange={handleFileChange}
           />
         </div>

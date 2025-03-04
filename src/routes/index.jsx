@@ -18,6 +18,7 @@ import AddMoviePage from "../pages/AdminTemplate/AddMoviePage";
 import FilmsPage from "../pages/AdminTemplate/Films";
 import EditMoviePage from "../pages/AdminTemplate/Films/EditMovie";
 import CreateShowtimePage from "../pages/AdminTemplate/Showtime";
+import EditUserPage from "../pages/AdminTemplate/EditUserPage";
 
 const routes = [
   {
@@ -69,6 +70,10 @@ const routes = [
       {
         path: "users",
         element: UsersPage,
+      },
+      {
+        path: "edit-user/:id",
+        element: EditUserPage,
       },
       {
         path: "add-movie",
