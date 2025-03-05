@@ -18,9 +18,11 @@ export default function UsersPage() {
     if (window.confirm("Bạn có chắc chắn muốn xóa người dùng này không?")) {
       dispatch(deleteUser(taiKhoan))
         .unwrap()
-        .then(() => toast.success("Xóa người dùng thành công!"))
+        .then(() => {
+          toast.success("Xóa người dùng thành công!");
+          dispatch(fetchListUsers()); // Gọi lại API để lấy danh sách mới
+        })
         .catch(() => toast.error("Xóa người dùng thất bại!"));
-      dispatch(fetchListUsers());
     }
   };
 
@@ -74,6 +76,7 @@ export default function UsersPage() {
           <td className="p-3 border">
             <Link
               to={`/admin/edit-user/${user.taiKhoan}`}
+              state={{ user }}
               className="bg-green-500 text-white px-2 py-1 rounded hover:bg-blue-600"
             >
               Edit
